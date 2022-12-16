@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/utils/dark_theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../theme/custom_theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder:
+          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+        return ChangeNotifierProvider<DarkThemeProvider>.value(
+          value: DarkThemeProvider(snapshot.data!),
+          child: _MyApp(),
+        );
+      },
     );
   }
+}
+
+class _MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Dark Theme Demo',
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system, //follow system
+      darkTheme: setDarkTheme,
+      theme: Provider.of<DarkThemeProvider>(context).isDarkMode
+          ? setDarkTheme
+          : setLightTheme,
+      home: const MyHomePage(title: 'Home Page'),
+    );
+  }
+}
+
+void changeTheme(bool set, BuildContext context) {
+  Provider.of<DarkThemeProvider>(context, listen: false).setDarkMode(set);
 }
 
 class MyHomePage extends StatefulWidget {
@@ -27,30 +52,14 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-DarkThemeProvider themeChangeProvider = DarkThemeProvider();
-
-@override
-void initState() {
-  initState();
-  getCurrentAppTheme();
-}
-
-void getCurrentAppTheme() async {
-  themeChangeProvider.darkTheme =
-      await themeChangeProvider.darkThemePreference.getTheme();
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -66,7 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          themeChange.darkTheme = !themeChange.darkTheme;
+          changeTheme(
+              Provider.of<DarkThemeProvider>(context, listen: false).isDarkMode
+                  ? false
+                  : true,
+              context);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
