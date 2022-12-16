@@ -1,43 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/utils/dark_theme_provider.dart';
+import 'package:portfolio/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../theme/custom_theme.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        return ChangeNotifierProvider<DarkThemeProvider>.value(
-          value: DarkThemeProvider(snapshot.data!),
-          child: _MyApp(),
-        );
-      },
-    );
-  }
-}
-
-class _MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Dark Theme Demo',
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system, //follow system
-      darkTheme: setDarkTheme,
-      theme: Provider.of<DarkThemeProvider>(context).isDarkMode
-          ? setDarkTheme
-          : setLightTheme,
-      home: const MyHomePage(title: 'Home Page'),
-    );
-  }
-}
+import '../../theme/custom_theme.dart';
 
 void changeTheme(bool set, BuildContext context) {
   Provider.of<DarkThemeProvider>(context, listen: false).setDarkMode(set);
@@ -55,10 +21,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Provider.of<DarkThemeProvider>(context).isDarkMode;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      backgroundColor: isDarkMode
+          ? setDarkTheme.backgroundColor
+          : setLightTheme.backgroundColor,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(58),
+        child: CustomAppBar(),
       ),
+      // AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
