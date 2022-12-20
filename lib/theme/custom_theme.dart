@@ -11,7 +11,9 @@ ThemeData _buildLightTheme() {
       backgroundColor: Color(0xffD6DFE4),
     ),
     //
-    primaryColor: const Color(0xff055AA3),
+    primaryColor: const Color(0xffF85D29),
+    // primaryColor: const Color(0xff055AA3),
+
     brightness: Brightness.light,
     backgroundColor: const Color(0xffD6DFE4),
     highlightColor: const Color(0xffEDF4F8),
@@ -41,7 +43,8 @@ ThemeData _buildDarkTheme() {
       backgroundColor: Color(0xff121517),
     ),
     //
-    primaryColor: const Color(0xff055AA3),
+    primaryColor: const Color(0xffF85D29),
+    // primaryColor: const Color(0xff055AA3),
     brightness: Brightness.dark,
     backgroundColor: const Color(0xff121517),
     highlightColor: const Color(0xff172026),

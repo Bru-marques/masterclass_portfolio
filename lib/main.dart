@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/pages/home/home.dart';
+import 'package:portfolio/pages/splash-screen/splash_screen.dart';
 import 'package:portfolio/theme/custom_theme.dart';
 import 'package:portfolio/utils/dark_theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +38,7 @@ class _MyApp extends StatelessWidget {
       theme: Provider.of<DarkThemeProvider>(context).isDarkMode
           ? setDarkTheme
           : setLightTheme,
-      home: const MyHomePage(title: 'Home Page'),
+      home: const SplashScreen(),
     );
   }
 }

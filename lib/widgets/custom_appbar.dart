@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/utils/dark_theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDarkMode = Provider.of<DarkThemeProvider>(context).isDarkMode;
     return AppBar(
-      leadingWidth: 70,
+      leadingWidth: 60,
       leading: hasBackButton
           ? IconButton(
               icon: const Icon(
@@ -28,10 +29,12 @@ class CustomAppBar extends StatelessWidget {
               ),
               onPressed: () => Navigator.pop(context),
             )
-          : const Icon(
-              color: Colors.deepOrangeAccent,
-              Icons.blur_circular,
-              size: 48,
+          : const Center(
+              child: FaIcon(
+                FontAwesomeIcons.slideshare,
+                color: Colors.deepOrangeAccent,
+                size: 32,
+              ),
             ),
       actions: [
         Padding(
